@@ -1,8 +1,8 @@
-// how many numbers would you like to test?
+// how many numbers should we test?
 const numbers = 12_000_000;
 // which number should we start at
 const startAt = 0;
-// this prevents things like the following numbers being valid: [ 224444, 442244, 444422, 666666 ]
+// prevent lots of duplicate digits - i.e. 224444, 442244, 444422, 666666
 const strictMode = true;
 
 
