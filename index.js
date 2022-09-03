@@ -1,7 +1,9 @@
 // how many numbers would you like to test?
-const numbers = 1_000_000;
+const numbers = 12_000_000;
 // which number should we start at
 const startAt = 0;
+// this prevents things like the following numbers being valid: [ 224444, 442244, 444422, 666666 ]
+const strictMode = true;
 
 
 function isEven(n) {
@@ -27,6 +29,11 @@ function countOccurences(numberToLookFor, numberToLookIn) {
   return count;
 }
 
+function findDuplicates(arry) {
+  return arry.filter((item, index) => arry.indexOf(item) !== index);
+}
+
+
 
 function main() {
   console.log('Starting number crunch!');
@@ -34,8 +41,9 @@ function main() {
 
   var results = [];
 
-  testNumbers:
+  numberCrunch:
   for (var i = 0; i < numbers; i++) {
+    // example number: 14233221
     var number = i;
   
     // check number has even number of digits
@@ -45,17 +53,22 @@ function main() {
     // example: ['14', '23', '32', '21']
     var couplets = splitNumber(number);
 
+    // strict mode: there should not be duplicate couplets
+    if (strictMode && findDuplicates(couplets).length) {
+      continue numberCrunch;
+    }
+
     for (var x = 0; x < couplets.length; x++) {
       // each couplet indicates how often an integer should appear in our number
       // example: ['14'] - there should be x1 4 in our number
       // lets check each couplet to see if they're telling the truth
       if (parseInt(couplets[x].charAt(0)) !== countOccurences(couplets[x].charAt(1), number)) {
-        continue testNumbers;
+        continue numberCrunch;
       }
   
       // make sure each quantity indicator gets mentioned/tested
       if (!couplets.map(e => e.charAt(1)).includes(couplets[x].charAt(0))) {
-        continue testNumbers;
+        continue numberCrunch;
       }
     }
 
